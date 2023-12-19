@@ -34,8 +34,13 @@ export const Button = styled.button<{ warning: boolean }>`
 `;
 
 
-export const CloseIcon = styled(X)<{ onClick: () => void }>`
+export const CloseIcon = styled(X)<{ onClick: () => void, 'aria-label': string }>`
   cursor: pointer;
+`;
+
+// Usage example
+<CloseIcon onClick={handleClose} aria-label="Close" />
+
 `
 
 // A button that triggers some onClick result, but looks like a link.
