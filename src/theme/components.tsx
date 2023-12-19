@@ -111,30 +111,31 @@ export function ExternalLink({
   target = '_blank',
   href,
   rel = 'noopener noreferrer',
-  ...rest // This captures all other props that haven't been destructured
+  ...rest
 }: Omit<HTMLProps<HTMLAnchorElement>, 'as' | 'ref' | 'onClick'> & { href: string }) {
+  const handleAnalyticsEvent = (url: string) => {
+    // Promisify the ReactGA outboundLink event
+    return new Promise((resolve) => {
+      ReactGA.outboundLink({ label: url }, () => {
+        resolve(url);
+      });
+    });
+  };
+
   const handleClick = useCallback(
-    (event: React.MouseEvent<HTMLAnchorElement>) => {
+    async (event: React.MouseEvent<HTMLAnchorElement>) => {
       // don't prevent default, don't redirect if it's a new tab
-      if (target === '_blank' || event.ctrlKey || event.metaKey) {
-        ReactGA.outboundLink({ label: href }, () => {
-          console.debug('Fired outbound link event', href)
-        })
-      } else {
-        event.preventDefault()
-        // send a ReactGA event and then trigger a location change
-        ReactGA.outboundLink({ label: href }, () => {
-          window.location.href = href
-        })
+      if (!(target === '_blank' || event.ctrlKey || event.metaKey)) {
+        event.preventDefault();
+        await handleAnalyticsEvent(href); // Wait for the analytics event to complete
+        window.location.href = href;
       }
     },
     [href, target]
-  )
+  );
 
-  // Props are now destructured and passed to StyledLink directly
-  return <StyledLink {...{ target, rel, href, onClick: handleClick, ...rest }} />
+  return <StyledLink {...{ target, rel, href, onClick: handleClick, ...rest }} />;
 }
-
 
 const rotate = keyframes`
   from {
