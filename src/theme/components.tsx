@@ -111,7 +111,7 @@ export function ExternalLink({
   target = '_blank',
   href,
   rel = 'noopener noreferrer',
-  ...rest
+  ...rest // This captures all other props that haven't been destructured
 }: Omit<HTMLProps<HTMLAnchorElement>, 'as' | 'ref' | 'onClick'> & { href: string }) {
   const handleClick = useCallback(
     (event: React.MouseEvent<HTMLAnchorElement>) => {
@@ -130,8 +130,11 @@ export function ExternalLink({
     },
     [href, target]
   )
-  return <StyledLink target={target} rel={rel} href={href} onClick={handleClick} {...rest} />
+
+  // Props are now destructured and passed to StyledLink directly
+  return <StyledLink {...{ target, rel, href, onClick: handleClick, ...rest }} />
 }
+
 
 const rotate = keyframes`
   from {
