@@ -5,27 +5,25 @@ import styled, { keyframes } from 'styled-components'
 import { darken } from 'polished'
 import { ArrowLeft, X } from 'react-feather'
 
-export const Button = styled.button.attrs<{ warning: boolean }, { backgroundColor: string }>(({ warning, theme }) => ({
-  backgroundColor: warning ? theme.red1 : theme.primary1
-}))`
-  padding: 1rem 2rem 1rem 2rem;
+export const Button = styled.button<{ warning: boolean }>`
+  padding: 1rem 2rem;
   border-radius: 3rem;
   cursor: pointer;
   user-select: none;
   font-size: 1rem;
   border: none;
   outline: none;
-  background-color: ${({ backgroundColor }) => backgroundColor};
+  background-color: ${({ warning, theme }) => warning ? theme.red1 : theme.primary1};
   color: ${({ theme }) => theme.white};
   width: 100%;
 
   :hover,
   :focus {
-    background-color: ${({ backgroundColor }) => darken(0.05, backgroundColor)};
+    background-color: ${({ warning, theme }) => darken(0.05, warning ? theme.red1 : theme.primary1)};
   }
 
   :active {
-    background-color: ${({ backgroundColor }) => darken(0.1, backgroundColor)};
+    background-color: ${({ warning, theme }) => darken(0.1, warning ? theme.red1 : theme.primary1)};
   }
 
   :disabled {
@@ -33,7 +31,8 @@ export const Button = styled.button.attrs<{ warning: boolean }, { backgroundColo
     color: ${({ theme }) => theme.text4};
     cursor: auto;
   }
-`
+`;
+
 
 export const CloseIcon = styled(X)<{ onClick: () => void }>`
   cursor: pointer;
