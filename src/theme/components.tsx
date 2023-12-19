@@ -37,6 +37,15 @@ export const Button = styled.button<{ warning: boolean }>`
 export const CloseIcon = styled(X)<{ onClick: () => void }>`
   cursor: pointer;
 `
+// If Button is used without text content
+<Button aria-label="Descriptive Action Name">...</Button>
+
+// For LinkStyledButton, if used without clear text indication
+<LinkStyledButton aria-label="Descriptive Link Name">...</LinkStyledButton>
+
+// For StyledInternalLink or StyledLink, if used with icons or unclear text
+<StyledInternalLink aria-label="Descriptive Link Name">...</StyledInternalLink>
+<StyledLink aria-label="Descriptive External Link Name">...</StyledLink>
 
 // A button that triggers some onClick result, but looks like a link.
 export const LinkStyledButton = styled.button<{ disabled?: boolean }>`
